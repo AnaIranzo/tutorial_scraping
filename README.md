@@ -1,8 +1,8 @@
-![logotipo de The Bridge](https://user-images.githubusercontent.com/27650532/77754601-e8365180-702b-11ea-8bed-5bc14a43f869.png  "logotipo de The Bridge")
+
 
 
 # [Bootcamp Web Developer Full Stack](https://www.thebridge.tech/bootcamps/bootcamp-fullstack-developer/)
-### JS, ES6, Node.js, Frontend, Backend, Express, React, MERN, testing, DevOps
+
 
 ## Workshop - Taller de Web Scraping
 
@@ -20,5 +20,3 @@
 6. Introduce en el navegador `http://localhost:3000`. Deberías visualizar: `{"mensaje":"La prueba funciona"}`
 7. Introduce en el navegador `http://localhost:3000/products`. **Esta es la ruta que hará scraping internamente a nuestro e-commerce elegido**. Deberías visualizar los productos scrapeados: `[{producto1},{producto2},...,{productoN}]`
 
-## A divertirse!!
-![img](./assets/meme-scrap.jpg)
