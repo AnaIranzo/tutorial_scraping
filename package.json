@@ -13,9 +13,8 @@
   },
   "author": "Alejandro reyes",
   "license": "ISC",
-
   "dependencies": {
     "express": "^4.17.1",
-    "puppeteer": "^10.2.0"
+    "puppeteer": "^10.4.0"
   }
 }

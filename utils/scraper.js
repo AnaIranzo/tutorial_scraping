@@ -14,22 +14,22 @@ const extractProductData = async (url,browser) => {
         // Utilizamos el método newPage.$eval(selector, function) y almacenamos en productData:
 
         /********** A RELLENAR todos los page.$eval(selector, function)  *********/
-        //titulo
-        //productData['name'] = await page.$eval(selector, function)
-        //precio
-        //productData['price'] = await page.$eval(selector, function)
-        //imagenes
-        //productData['img'] = await page.$eval(selector, function)
+        //titulo --> '.productTitle'
+        productData['name'] = await page.$eval('.productTitle', name => name.innerHTML); //selector , funcion
+        //precio --> '#normalpricenumber'
+        productData['price'] = await page.$eval('#normalpricenumber', price => price.innerHTML);
+        //imagenes --> document.querySelector('#productmainimageitem').src
+        productData['img'] = await page.$eval('#productmainimageitem', img => img.src);
         //info
-        //productData['info'] = await page.$eval(selector, function)
+        productData['info'] = await page.$eval('.productextrainfotitle', info => info.innerHTML)
         //descripción
-        //productData['description'] = await page.$eval(selector, description=>description.innerText.slice(0,200) + '...')
+        productData['description'] = await page.$eval('.productdetailinfocontainer', description=>description.innerText.slice(0,200) + '...')
         
         return productData // Devuelve los datos de un producto
     }
     catch(err){
         // Devolvemos el error 
-       return {error:err}
+        return {error:err}
     }
     
 }
@@ -41,7 +41,7 @@ const scrap = async (url) => {
         const scrapedData = []
         // inicializamos una instancia del navegador (browser) con puppeteer.launch() y añadimos en el objeto de configuración la opción headless
         console.log("Opening the browser......");
-        const browser = await puppeteer.launch({headless:false})
+        const browser = await puppeteer.launch({headless:true}) //si lo ponemos en false abre el navegador
 
         // Abrimos una nueva pestaña en el navegador creando una instancia con el método newPage() a la que llamaremos page
         const page = await browser.newPage();
@@ -55,7 +55,8 @@ const scrap = async (url) => {
         // En este caso , en el CB filtramos el array de items, guardando en un nuevo array
 
         /********** A RELLENAR page.$eval(selector, function)  *********/
-        //const tmpurls = await page.$$eval(selector,funcion)
+        //lista de nodos <a> -> convertirlo en una lista de href --> array de links
+        const tmpurls = await page.$$eval('div.productName> div > div > a',data => data.map(a => a.href))
         
         //Quitamos los duplicados
         const urls = await tmpurls.filter((link,index) =>{ return tmpurls.indexOf(link) === index})
@@ -71,13 +72,13 @@ const scrap = async (url) => {
         console.log(`${urls2.length} links encontrados`);
 
         // Iteramos el array de urls con un bucle for/in y ejecutamos la promesa extractProductData por cada link en el array. Luego pusheamos el resultado a scraped data
-        for(productLink in urls2){
+        for(productLink in urls2){//lanza el metodo extractProductData uno por uno y los pushea en scrapedData
             const product = await extractProductData(urls2[productLink],browser)
             scrapedData.push(product)
         }
         
         console.log(scrapedData, "Lo que devuelve mi función scraper", scrapedData.length) 
-       
+        
         // cerramos el browser con el método browser.close
         await browser.close()
         // Devolvemos el array con los productos
